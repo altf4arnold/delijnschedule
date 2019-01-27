@@ -31,7 +31,7 @@ def organising(data):
 	it returns a dictionnary that contains the entire stack of information
 	that we will display.
 	"""
-	time = data['huidigeDag'] + data['huidigeTijd']
+	time = data['huidigeDag'] + "\t" + data['huidigeTijd']
 	busses = data['lijnen']
 	return {'time': time, 'lines': busses}
 
@@ -45,22 +45,25 @@ def printer(thetruth):
 		os.system("cls")
 	elif os.name == "posix":
 		os.system("clear")
-	print(thetruth['time'])
-	for i in len(thetruth['lines']):
-		print(thetruth['lines'][i]['lijnNummer'], "\t",\
-		thetruth['lines'][i]['bestemming'], "\t\t\t\t",\
-		thetruth['lines'][i]['vertrekTijd'])
+	print(thetruth['time'] + "\n")
+	for i in range(len(thetruth['lines'])):
+		toprint = thetruth['lines'][i]
+		print(toprint['lijnNummerPubliek'], "\t", toprint['bestemming'],\
+		"\t\t\t\t", toprint['vertrekTijd'])
 
 
 def main():
 	"""
 	Main module of all things
 	"""
-	data = organising(webrequest(whatwewant.stop_nb))
+	brut_result = webrequest(whatwewant.stop_nb)
+	data = organising(brut_result)
 	while True:
 		printer(data)
 		time.sleep(1)
-		data = organising(webrequest(whatwewant.stop_nb))
+		brut_result = webrequest(whatwewant.stop_nb, brut_result)
+		# brut result is provided as a failsafe if the request fails
+		data = organising(brut_result)
 
 
 if __name__ == '__main__':
