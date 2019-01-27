@@ -1,33 +1,35 @@
-def webrequest(stop, vehicles):
-	return json.load(request.urlopen("https://www.delijn.be/rise-api-core/haltes/vertrekken/{}/{}".format(stop,vehicles)))
+"""
+This is a small program who has the purpose to print the delijn
+public transportation real time schedule on a terminal.
+"""
 
-def sort(data_out_json):
-	return data_out_json["lijnen"]
-
-def display(data,vehicles,terminal):	
-	if terminal=="bash":
-		os.system("clear")
-	elif terminal=="dos":
-		os.system("cls")
-	turns=0
-	while turns<vehicles:
-		output=data[turns]
-		print (output["lijnNummerPubliek"],"\t\t\t",output["vertrekTijd"],"\n")
-		turns = turns+1
-
-from urllib import request
 import json
 import os
 import time
+import whatwewant
+from urllib import request
 
 
-stop_nb =
-vehicles_nb =
-terminal_name="bash"
+def webrequest(stop, vehicles, previous = {'lijnen' : [], 'huidigeTijd': '00:00', 'huidigeDag': 'maandag'}):
+	"""
+	This function has to make the API request. If it can't, it will return the
+	previous API result if provided. otherwise, it will return just enough
+	to not crash the entire program.
+	"""
+	try:
+		toreturn = json.load(request.urlopen("https://www.delijn.be/rise-api-core/haltes/vertrekken/{}/{}".format(stop,vehicles)))
+	except:
+		toreturn = previous
+	return toreturn
 
 
-while True:
-	display(sort(webrequest(stop_nb,vehicles_nb)),vehicles_nb,terminal_name)
-	time.sleep(1)
-
-##Made with ❤ by Altf4
+def organising(data):
+	"""
+	This function has been made to only keep the data that we are interested in
+	it returns a dictionnary that contains the entire stack of information
+	that we will display.
+	"""
+	time = data['huidigeDag'] + data['huidigeTijd']
+	busses = data['lijnen']
+	return {'time': time, 'lines': busses}
+	
