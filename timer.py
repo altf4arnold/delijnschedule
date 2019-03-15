@@ -31,8 +31,8 @@ def organising(data):
 	it returns a dictionnary that contains the entire stack of information
 	that we will display.
 	"""
-	time = data['huidigeDag'] + "\t" + data['huidigeTijd']
-	busses = data['lijnen']
+	time = "Time function broke because of DeLijn :-("
+	busses = data["halte"][0]['lijnen']
 	return {'time': time, 'lines': busses}
 
 
