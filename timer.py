@@ -10,7 +10,7 @@ import whatwewant
 from urllib import request
 
 
-def webrequest(stop, previous = {'lijnen' : [], 'huidigeTijd': '00:00', 'huidigeDag': 'maandag'}):
+def webrequest(stop, previous={"halte": [{"lijnen": []}]}):
 	"""
 	This function has to make the API request. If it can't, it will return the
 	previous API result if provided. otherwise, it will return just enough
@@ -18,7 +18,7 @@ def webrequest(stop, previous = {'lijnen' : [], 'huidigeTijd': '00:00', 'huidige
 	"""
 	try:
 		toreturn = json.load(request.urlopen\
-	 	("https://www.delijn.be/rise-api-core/haltes/vertrekken/{}/5"\
+	 	("https://www.delijn.be/rise-api-core/haltes/vertrekken/{}"\
 		.format(stop)))
 	except:
 		toreturn = previous
