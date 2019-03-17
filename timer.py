@@ -10,7 +10,7 @@ import whatwewant
 from urllib import request
 
 
-def webrequest(stop, previous={"halte": [{"lijnen": []}]}):
+def webrequest(stop, previous={"halte": [{"lijnen": [],'omschrijvingLang':""}]}):
 	"""
 	This function has to make the API request. If it can't, it will return the
 	previous API result if provided. otherwise, it will return just enough
@@ -18,7 +18,7 @@ def webrequest(stop, previous={"halte": [{"lijnen": []}]}):
 	"""
 	try:
 		toreturn = json.load(request.urlopen\
-	 	("https://www.delijn.be/rise-api-core/haltes/vertrekken/{}"\
+		("https://www.delijn.be/rise-api-core/haltes/vertrekken/{}"\
 		.format(stop)))
 	except:
 		toreturn = previous
@@ -31,9 +31,9 @@ def organising(data):
 	it returns a dictionnary that contains the entire stack of information
 	that we will display.
 	"""
-	time = "Time function broke because of DeLijn :-("
+	name = data['halte'][0]['omschrijvingLang']
 	busses = data["halte"][0]['lijnen']
-	return {'time': time, 'lines': busses}
+	return {'name': name, 'lines': busses}
 
 
 def printer(thetruth):
@@ -45,7 +45,7 @@ def printer(thetruth):
 		os.system("cls")
 	elif os.name == "posix":
 		os.system("clear")
-	print(thetruth['time'] + "\n")
+	print(thetruth['name'] + "\n")
 
 	# Because of recent API changes, the amount of data is far to high.
 	if len(thetruth['lines']) >= 5:
