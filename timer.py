@@ -46,7 +46,13 @@ def printer(thetruth):
 	elif os.name == "posix":
 		os.system("clear")
 	print(thetruth['time'] + "\n")
-	for i in range(len(thetruth['lines'])):
+
+	# Because of recent API changes, the amount of data is far to high.
+	if len(thetruth['lines']) >= 5:
+		turns = 5
+	else:
+		turns = len(thetruth['lines'])
+	for i in range(turns):
 		toprint = thetruth['lines'][i]
 		print(toprint['lijnNummerPubliek'], "\t", toprint['bestemming'],\
 		"\t\t\t\t", toprint['vertrekTijd'])
